@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Birthday Surprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff6b6b, #ffc0cb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: containerAppear 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes containerAppear {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6b6b, transparent);
+            animation: borderLine 2s linear infinite;
+        }
+
+        @keyframes borderLine {
+            100% {
+                left: 100%;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            position: relative;
+            animation: slideDown 0.5s ease forwards;
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideRight 0.5s ease forwards;
+        }
+
+        .input-group:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .input-group:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slideRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .input-group:focus-within label {
+            color: #ff6b6b;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-group input:focus {
+            border-color: #ff6b6b;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease forwards;
+            animation-delay: 0.8s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        button:active::after {
+            width: 200px;
+            height: 200px;
+        }
+
+        .error-message {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* Thêm hiệu ứng float cho emoji */
+        .emoji {
+            display: inline-block;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hiệu ứng gợn sóng khi focus input */
+        .input-group::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #ff6b6b 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        .input-group:active::after {
+            transform: scale(0, 0);
+            opacity: .3;
+            transition: 0s;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2><span class="emoji">🎂</span> Birthday Login <span class="emoji">🎂</span></h2>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">
+                <span>Login</span>
+            </button>
+            <p id="error" class="error-message">Incorrect username or password!</p>
+        </form>
+    </div>
+
+    <script>
+        // Thêm hiệu ứng ripple cho button
+        const button = document.querySelector('button');
+        button.addEventListener('click', function(e) {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const ripple = document.createElement('span');
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            this.appendChild(ripple);
+
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+
+        // Xử lý đăng nhập
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Thay đổi thông tin đăng nhập ở đây
+            const correctUsername = 'Duahau';
+            const correctPassword = '2410';
+            
+            if (username === correctUsername && password === correctPassword) {
+                // Animation khi đăng nhập thành công
+                document.querySelector('.login-container').style.animation = 'success 0.5s ease forwards';
+                
+                setTimeout(() => {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    window.location.href = 'index.html';
+                }, 500);
+            } else {
+                const error = document.getElementById('error');
+                error.style.display = 'block';
+                error.style.animation = 'none';
+                void error.offsetWidth; // Trigger reflow
+                error.style.animation = 'shake 0.5s ease-in-out';
+                
+                // Thêm hiệu ứng rung cho form
+                document.querySelector('.login-container').classList.add('shake');
+                setTimeout(() => {
+                    document.querySelector('.login-container').classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // Kiểm tra nếu đã đăng nhập
+        window.onload = function() {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Thêm hiệu ứng focus cho input
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
